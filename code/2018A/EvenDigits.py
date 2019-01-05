@@ -37,23 +37,38 @@ def solution2(input):
         elif p1_flag is True:
             if input_list[i] < 8:
                 p1_flag = False
-
-    if p1_flag is True:
-        p1_answer = 2*10**len(input_list) - int(input)
-        return min([minus_ans, p1_answer])
+    p1_answer = 2 * 10 ** len(input_list) - int(input)
+    if p1_answer < 0:
+        p1_answer = int(input)
 
     input_list = list(map(int, input))
     p2_flag = False
     for i in range(len(input_list)):
         if p2_flag is False and input_list[i] % 2 != 0:
             p2_flag = True
-            input_list[i - 1] += 2
+            if input_list[i] >= 8:
+                input_list[i] = 0
+                if input_list[i - 1] % 2 != 0:
+                    input_list[i - 1] += 1
+                else:
+                    input_list[i - 1] += 2
+            else:
+                input_list[i] += 1
+        elif p2_flag is True:
+            input_list[i] = 0
 
-    p2_ans = int(input) - int("".join([str(x) for x in input_list]))
+    p2_ans = int("".join([str(x) for x in input_list])) - int(input)
+    if p2_ans < 0:
+        p2_ans = int(input)
 
+
+    if p1_flag is True:
+        if p1_answer is not None:
+            return min([minus_ans, p1_answer, p2_ans])
+        else:
+            return min([minus_ans, p2_ans])
     else:
         return min([minus_ans, p2_ans])
-
 
 
 if __name__ == '__main__':
